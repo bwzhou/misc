@@ -21,21 +21,26 @@ void wordBreakHelper(vector<vector<int> > &mark, string s, int start, unordered_
 vector<string> wordBreak(string s, unordered_set<string> &dict) {
     vector<vector<int> > mark(s.size(), vector<int>());
     vector<string> result;
-    for (int i = 0; i < s.size(); ++i) {
-        for (int j = i; j < s.size(); ++j) {
-            if (dict.find(s.substr(i, j - i + 1)) != dict.end()) {
-                mark[i].push_back(j + 1);
+    // the backward propagation order is important to prune fruitless searches
+    // early on
+    for (int stop = s.size(); stop >= 0; --stop) {
+        if (stop < s.size() && mark[stop].empty()) {
+          continue;
+        }
+        for (int start = stop - 1; start >= 0; --start) {
+            if (dict.find(s.substr(start, stop - start)) != dict.end()) {
+                mark[start].push_back(stop);
             }
         }
     }
-    cout << "finished mark" << endl;
+    cout << "finished marking" << endl;
     wordBreakHelper(mark, s, 0, dict, "", result);
     return result;
 }
 
 int main() {
-  string s = "aaa";
-  unordered_set<string> dict({"a","aa","aaa"});
+  string s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+  unordered_set<string> dict{"a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"};
   vector<string> result = wordBreak(s, dict);
   for (string &each : result)
     cout << each << endl;
