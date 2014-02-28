@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 using namespace std;
+// O(Nlog(N))
 int jump(int A[], int n) {
     vector<int> steps(n, n);
     steps[n - 1] = 0;
@@ -19,7 +20,6 @@ int jump(int A[], int n) {
                 l = mid + 1;
             }
         }
-        cout << "size=" << minimum.size() << " l=" << l << " h=" << h << endl;
         if (l < minimum.size()) {
             steps[i] = steps[minimum[l]] + 1;
         }
@@ -28,13 +28,27 @@ int jump(int A[], int n) {
         }
         minimum.push_back(i);
     }
-    for (int each : minimum) {
-        cout << each << " ";
+    return steps[0] < n ? steps[0] : -1;
+}
+// O(N)
+int jump2(int A[], int n) {
+  int ret = 0;
+  int last = 0;
+  int curr = 0;
+  for (int i = 0; i < n; ++i) {
+    if (i > last) {
+      if (curr == last && last < n - 1) {
+        return -1;
+      }
+      last = curr;
+      ++ret;
     }
-    cout << endl;
-    return steps[0];
+    curr = max(curr, i + A[i]);
+  }
+  return ret;
 }
 int main() {
-    int A[3] = {2, 0, 1};
-    cout << jump(A, 3) << endl;
+    int A[5] = {3, 2, 1, 0, 4};
+    cout << jump(A, 5) << endl;
+    cout << jump2(A, 5) << endl;
 }
