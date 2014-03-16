@@ -1,0 +1,18 @@
+﻿<html>
+<head>
+<!-- This won't work if you just open it in a browser because you cannot access localStorage of a different domain. So you need to open oj.leetcode.com in your favoriate browser, compile all the dependent .js files plus the exportSolutions function into a single file, then execute it in the developer console. A download dialog will pop up for you to download all your cpp solutions -->
+<script src="https://raw.github.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
+<script src="http://stuk.github.io/jszip/dist/jszip.min.js"></script>
+<script>
+  function exportSolutions() {
+    var zip = new JSZip();
+    for (var i = 1; i <= 151; ++i) {
+      zip.file(i + ".cpp", localStorage.getItem(i + "_cpp"))
+    }
+    var blob = zip.generate({type:"blob"});
+    saveAs(blob, "leetcode.zip");
+  }
+</script>
+</head>
+<body></body>
+</html>
