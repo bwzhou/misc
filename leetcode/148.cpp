@@ -64,6 +64,7 @@ public:
     }
 */
     // return the first element after the cut.
+    /*
     ListNode *cutList(ListNode *head, int len) {
         for (int i = 1; i < len && head; ++i) {
             head = head->next;
@@ -73,8 +74,23 @@ public:
         head->next = NULL;
         return next;
     }
+    */
+    ListNode *cutList(ListNode *head, int len) {
+        ListNode *prev = NULL;
+        ListNode *curr = head;
+        for (int i = 0; i < len; ++i) {
+            if (curr == NULL) {
+                return NULL;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+        prev->next = NULL;
+        return curr;
+    }
     
     // return the last element in the merged list.
+    /*
     ListNode *mergeList(ListNode *l1, ListNode *l2, ListNode *last) {
         while (l1 || l2) {
             if (!l1) {
@@ -89,6 +105,20 @@ public:
             } else {
                 last->next = l2;
                 l2 = l2->next;
+            }
+            last = last->next;
+        }
+        return last;
+    }
+    */
+    ListNode *mergeList(ListNode *l1, ListNode *l2, ListNode *last) {
+        while (l1 || l2) {
+            if (l2 && (!l1 || l2->val < l1->val)) {
+                last->next = l2;
+                l2 = l2->next;
+            } else {
+                last->next = l1;
+                l1 = l1->next;
             }
             last = last->next;
         }
