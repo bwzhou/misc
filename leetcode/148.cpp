@@ -146,7 +146,6 @@ public:
                 ListNode *l2 = cutList(l1, i);
                 start = cutList(l2, i);
                 last = mergeList(l1, l2, last);
-                last->next = start;
             } 
         }
         return dummy.next;
