@@ -128,7 +128,6 @@ int minCut2(string s) {
     }
     vector<int> M(N, N);
     for (int i = N; i >= 0; --i) {
-        if (i < N && M[i] == N) continue;
         for (int j = 0; j < i; ++j) {
             if (P[j][i - 1]) {
                 M[j] = min(M[j], i < N ? M[i] + 1 : 0);
