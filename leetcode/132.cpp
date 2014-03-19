@@ -1,5 +1,6 @@
 class Solution {
 public:
+/*
     int minCut(string s) {
         const int n = s.size();
         bool **pal = new bool*[n];
@@ -9,6 +10,7 @@ public:
                 pal[i][j] = false;
             }
         }
+        
         for (int len = 1; len <= n; ++len) {
             for (int start = 0; start <= n - len; ++start) {
                 int end = start + len - 1;
@@ -17,7 +19,6 @@ public:
                 }
             }
         }
-        
         int *cost = new int[n];
         cost[0] = 0;
         for (int i = 1; i < n; ++i) {
@@ -33,5 +34,33 @@ public:
             }
         }
         return cost[n - 1];
+    }
+*/
+    int minCut(string s) {
+        int N = s.size();
+        bool **P = new bool*[N];
+        for (int i = 0; i < N; ++i) {
+            P[i] = new bool[N];
+            for (int j = 0; j < N; ++j) {
+                P[i][j] = false;
+            }
+        }
+        for (int i = 1; i <= N; ++i) {
+            for (int j = 0; j <= N - i; ++j) {
+                if (i == 1 ||
+                    ((i == 2 || P[j + 1][j + i - 2]) && s[j] == s[j + i - 1])) {
+                    P[j][j + i - 1] = true;
+                }
+            }
+        }
+        vector<int> M(N, N);
+        for (int i = N; i >= 0; --i) {
+            for (int j = 0; j < i; ++j) {
+                if (P[j][i - 1]) {
+                    M[j] = min(M[j], i < N ? M[i] + 1 : 0);
+                }
+            }
+        }
+        return M[0];
     }
 };
