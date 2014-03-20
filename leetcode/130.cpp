@@ -67,6 +67,15 @@ public:
         }
     }
 */
+    /* 
+        This is actually not iterative deepening search as follows:
+        for (int i = 0; i < N; ++i) {
+            DFS(limit = i);
+        }
+        I call it incremental DFS. It also limits the depth of recursion to avoid
+        stack overflow by storing the search frontier in a queue and reboots the search
+        from the saved frontier in the outer loop.
+    */
     void mark(vector<vector<char>> &board, int x, int y) {
         vector<pair<int, int>> worklist;
         worklist.push_back(make_pair(x, y));
