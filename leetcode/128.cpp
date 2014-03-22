@@ -34,10 +34,12 @@ public:
                 continue;
             }
             count[each] = 1;
-            int left{count[each - 1]};
-            int right{count[each + 1]};
-            count[each - left] = count[each + right] = 1 + left + right; ////
-            maxConsec = max(maxConsec, 1 + left + right);
+            int leftbound{count[each - 1]}; // the length of consecutive numbers to the left
+            int rightbound{count[each + 1]}; // the length of consecutive numbers to the right
+            // Only update the boundary counters to the new concatenative length
+            // Inner counters do not matter
+            count[each - leftbound] = count[each + rightbound] = 1 + leftbound + rightbound;
+            maxConsec = max(maxConsec, 1 + leftbound + rightbound);
         }
         return maxConsec;
     }
