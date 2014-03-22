@@ -1,33 +1,55 @@
 class Solution {
 public:
-    int ladderLength(string start, string end, unordered_set<string> &dict) {
-        unordered_set<string> visited;
-        deque<string> path;
-        deque<int> depth;
-        visited.insert(start);
-        path.push_back(start);
-        depth.push_back(1);
-        while (!path.empty()) {
-            string curr = path.front();
-            int currDepth = depth.front();
-            for (char &each : curr) {
-                char copy = each;
-                for (int i = 0; i < 26; ++i) {
-                    each = 'a' + i;
-                    if (dict.find(curr) != dict.end() && visited.find(curr) == visited.end()) {
-                        visited.insert(curr);
-                        path.push_back(curr);
-                        depth.push_back(currDepth + 1);
-                        if (curr == end) {
-                            return depth.back();
+    void genPaths(string end, string start, unordered_map<string, unordered_set<string>> &last,
+                  vector<vector<string>> &result, vector<string> &path) {
+        path.emplace_back(end);
+        if (end == start) {
+            result.push_back(vector<string>(path.rbegin(), path.rend()));
+        }
+        for (const auto &each : last[end]) {
+            genPaths(each, start, last, result, path);
+        }
+        path.pop_back();
+    }
+    vector<vector<string>> findLadders(string &start, string &end, unordered_set<string> &dict) {
+        vector<vector<string>> result;
+        vector<unordered_set<string>> level(2); // alternate two vectors to traverse by level
+        int currLevel = 0, nextLevel;
+        unordered_map<string, unordered_set<string>> last;
+        unordered_set<string> found;
+
+        level[currLevel].insert(start);
+        found.insert(start);
+        while (true) {
+            for (const auto &curr : level[currLevel]) {
+                nextLevel = (currLevel + 1) % 2;
+                string tmp(curr);
+                for (int i = 0; i < tmp.size(); ++i) {
+                    char copy = tmp[i];
+                    for (char j = 'a'; j <= 'z'; ++j) {
+                        tmp[i] = j;
+                        if (dict.count(tmp) > 0 && found.count(tmp) == 0) {
+                            level[nextLevel].insert(tmp);
+                            last[tmp].insert(curr);
                         }
                     }
+                    tmp[i] = copy;
                 }
-                each = copy;
             }
-            path.pop_front();
-            depth.pop_front();
-        }
-        return 0;
+            if (level[nextLevel].count(end)) {
+                vector<string> path;
+                genPaths(end, start, last, result, path);
+                break;
+            }
+            if (level[nextLevel].empty()) {
+                break;
+            }
+            for (const auto &each : level[nextLevel]) {
+                found.insert(each);
+            }
+            level[currLevel].clear();
+            currLevel = nextLevel;
+       }
+       return result;
     }
 };
