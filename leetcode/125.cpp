@@ -1,5 +1,6 @@
 class Solution {
 public:
+/*
     bool isPalindrome(string s) {
         int l = 0, h = s.size() - 1;
         while (l < h) {
@@ -20,5 +21,28 @@ public:
         } else {
             return false;
         }
+    }
+*/
+    bool isPalindrome(string s) {
+        int l = 0;
+        int h = s.size() - 1;
+        while (l < h) {
+            if (isalnum(s[l]) && isalnum(s[h])) {
+                if (tolower(s[l]) == tolower(s[h])) {
+                    ++l;
+                    --h;
+                } else {
+                    break;
+                }
+            } else {
+                if (!isalnum(s[l])) {
+                    ++l;
+                }
+                if (!isalnum(s[h])) {
+                    --h;
+                }
+            }
+        }
+        return l >= h;
     }
 };
