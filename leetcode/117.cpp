@@ -16,26 +16,14 @@ public:
             p = NULL;
             while (curr) {
                 if (curr->left) {
-                    if (next == NULL) {
-                        next = curr->left;
-                    }
-                    if (p) {
-                        p->next = curr->left;
-                        p = p->next;
-                    } else {
-                        p = curr->left;
-                    }
+                    if (next == NULL) next = curr->left;
+                    if (p) p->next = curr->left;
+                    p = curr->left;
                 }
                 if (curr->right) {
-                    if (next == NULL) {
-                        next = curr->right;
-                    }
-                    if (p) {
-                        p->next = curr->right;
-                        p = p->next;
-                    } else {
-                        p = curr->right;
-                    }
+                    if (next == NULL) next = curr->right;
+                    if (p) p->next = curr->right;
+                    p = curr->right;
                 }
                 curr = curr->next;
             }
