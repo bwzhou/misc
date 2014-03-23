@@ -9,37 +9,19 @@
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        TreeLinkNode *curr = root;
-        TreeLinkNode *next, *p;
-        while (curr) {
-            next = NULL;
-            p = NULL;
+        TreeLinkNode *left = root;
+        while (left) {
+            TreeLinkNode *curr = left;
             while (curr) {
                 if (curr->left) {
-                    if (next == NULL) {
-                        next = curr->left;
-                    }
-                    if (p) {
-                        p->next = curr->left;
-                        p = p->next;
-                    } else {
-                        p = curr->left;
-                    }
+                    curr->left->next = curr->right;
                 }
-                if (curr->right) {
-                    if (next == NULL) {
-                        next = curr->right;
-                    }
-                    if (p) {
-                        p->next = curr->right;
-                        p = p->next;
-                    } else {
-                        p = curr->right;
-                    }
+                if (curr->right && curr->next) {
+                    curr->right->next = curr->next->left;
                 }
                 curr = curr->next;
             }
-            curr = next;
+            left = left->left;
         }
     }
 };
