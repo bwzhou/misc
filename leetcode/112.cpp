@@ -24,7 +24,6 @@ public:
         if (root == NULL) {
             return false;
         }
-        int curr = 0;
-        return checkPathSum(root, sum, curr);
+        return checkPathSum(root, sum, 0);
     }
 };
