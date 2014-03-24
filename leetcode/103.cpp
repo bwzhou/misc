@@ -10,42 +10,31 @@
 class Solution {
 public:
     vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
-        int from = 0;
-        int to = 1;
-        vector<vector<TreeNode *>> S(2);
-        S[from].push_back(root);
         vector<vector<int>> result;
         if (root == NULL) {
             return result;
         }
-        result.push_back(vector<int>{root->val});
-        while (!S[0].empty() || !S[1].empty()) {
-            TreeNode *head = S[from].back();
-            if (from == 1) {
-                if (head->left) {
-                    S[to].push_back(head->left);
-                }
-                if (head->right) {
-                    S[to].push_back(head->right);
-                }
+        bool leftToRight = true;
+        stack<TreeNode *> currLevel, nextLevel;
+        currLevel.push(root);
+        result.push_back(vector<int>());
+        while (!currLevel.empty()) {
+            TreeNode *head = currLevel.top();
+            result.back().push_back(head->val);
+            if (leftToRight) {
+                if (head->left) nextLevel.push(head->left);
+                if (head->right) nextLevel.push(head->right);
             } else {
-                if (head->right) {
-                    S[to].push_back(head->right);
-                }
-                if (head->left) {
-                    S[to].push_back(head->left);
-                }
+                if (head->right) nextLevel.push(head->right);
+                if (head->left) nextLevel.push(head->left);
             }
-            S[from].pop_back();
-            if (S[from].empty()) {
-                vector<int> tmp;
-                for (auto &each : S[to]) {
-                    tmp.push_back(each->val);
+            currLevel.pop();
+            if (currLevel.empty()) {
+                if (!nextLevel.empty()) {
+                    result.push_back(vector<int>());
                 }
-                if (!tmp.empty()) {
-                    result.push_back(tmp);
-                }
-                swap(from, to);
+                swap(currLevel, nextLevel);
+                leftToRight = !leftToRight;
             }
         }
         return result;        
