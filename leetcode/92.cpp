@@ -8,6 +8,7 @@
  */
 class Solution {
 public:
+/*
     ListNode *reverseBetween(ListNode *head, int m, int n) {
         int i = 1;
         ListNode *last = NULL;
@@ -38,5 +39,25 @@ public:
             }
         }
         return head;
+    }
+*/
+    ListNode *reverseBetween(ListNode *head, int m, int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        ListNode dummy(0);
+        dummy.next = head;
+        ListNode *preM, *pre = &dummy; // preM is the (m-1)-th node and pre is the n-th node
+        for (int i = 1; i <= n; ++i) {
+            if (i == m) preM = pre;
+            if (i > m && i <= n) { // insert head after preM and update pre->next to point at head->next
+                pre->next = head->next;
+                head->next = preM->next;
+                preM->next = head;
+                head = pre; // head->next has been moved
+            }
+            pre = head;
+            head = head->next;
+        }
+        return dummy.next;
     }
 };
