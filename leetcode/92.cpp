@@ -42,8 +42,6 @@ public:
     }
 */
     ListNode *reverseBetween(ListNode *head, int m, int n) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
         ListNode dummy(0);
         dummy.next = head;
         ListNode *preM, *pre = &dummy; // preM is the (m-1)-th node and pre is the n-th node
