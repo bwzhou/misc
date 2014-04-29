@@ -33,6 +33,7 @@ public:
     }
 */
     string simplifyPath(string path) {
+        /*
         vector<string> simplPath;
         int start, end;
         start = end = 0;
@@ -63,5 +64,35 @@ public:
             result = "/";
         }
         return result;
+        */
+        stack<string> S;
+        int start = -1;
+        for (int end = 0; end <= path.size(); ++end) {
+            if (start >= 0 && (end == path.size() || path[end] == '/')) {
+                string entry = path.substr(start, end - start);
+                start = -1;
+                if (entry == "..") {
+                    if (!S.empty()) {
+                        S.pop();
+                    }
+                } else if (entry == ".") {
+                    continue;
+                } else if (!entry.empty()) {
+                    S.push(entry);
+                }
+            } else if (start < 0 && end < path.size() && path[end] != '/') {
+                start = end;
+            }
+        }
+        if (S.empty()) {
+            return "/";
+        } else {
+            string result;
+            while (!S.empty()) {
+                result = "/" + S.top() + result;
+                S.pop();
+            }
+            return result;
+        }
     }
 };
